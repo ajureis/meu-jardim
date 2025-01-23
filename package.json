@@ -1,16 +1,37 @@
 {
-  "name": "meu-jardim",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.23"
-  }
+	"name": "meu-jardim",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"date-fns": "^4.1.0",
+		"dompurify": "^3.2.3",
+		"jsdom": "^26.0.0",
+		"next": "14.2.23",
+		"react": "^18",
+		"react-dom": "^18",
+		"react-icons": "^5.4.0",
+		"react-markdown": "^9.0.3",
+		"remark": "^15.0.1",
+		"remark-html": "^16.0.1",
+		"winston": "^3.17.0"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.26.0",
+		"@babel/preset-react": "^7.26.3",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.2.0",
+		"@testing-library/user-event": "^14.6.1",
+		"autoprefixer": "^10.4.20",
+		"babel-jest": "^29.7.0",
+		"identity-obj-proxy": "^3.0.0",
+		"jest": "^29.7.0",
+		"jest-environment-jsdom": "^29.7.0",
+		"tailwindcss": "^3.4.17"
+	}
 }
