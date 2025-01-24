@@ -1,60 +1,22 @@
-import Image from "next/image";
 import logger from "@/logger";
+import { getPostBySlug } from "@/services/posts";
 
-import { remark } from "remark";
-import html from "remark-html";
-
-import { FaRegShareFromSquare } from "react-icons/fa6";
-import ButtonLink from "@/components/ButtonLink";
+import Image from "next/image";
 
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { FaRegShareFromSquare } from "react-icons/fa6";
+
+import ButtonLink from "@/components/ButtonLink";
 
 import styles from "./page.module.css";
 
-async function getPostBySlug(slug) {
-	const url = `http://localhost:3042/posts?slug=${slug}`;
-
-	try {
-		const response = await fetch(url, {
-			cache: "no-store", // Adiciona esta linha para evitar cache
-		});
-
-		if (!response.ok) {
-			logger.error(`Erro ao buscar posts: ${response.statusText}`);
-			return null;
-		}
-
-		logger.info("Posts buscados com sucesso");
-
-		const data = await response.json();
-
-		if (!data || data.length === 0) {
-			logger.warn(`Nenhum post encontrado para o slug: ${slug}`);
-			return null;
-		}
-
-		const post = data[0];
-
-		if (!post.content) {
-			logger.error("O campo 'text' está ausente no post retornado.");
-			return null;
-		}
-
-		const processedContent = await remark().use(html).process(post.content);
-		post.content = processedContent.toString();
-
-		return post;
-	} catch (error) {
-		logger.error(`Erro ao buscar o post: ${error.message}`);
-		return null;
-	}
-}
-
 export default async function PagePost({ params }) {
 	const post = await getPostBySlug(params.slug);
+
 	if (!post) {
-		return <p>Post não encontrado.</p>;
+		logger.warn(`Nenhum post encontrado para o slug: ${params.slug}`);
+		return <p className="text-center text-gray-500">Post não encontrado.</p>;
 	}
 
 	return (
@@ -67,10 +29,8 @@ export default async function PagePost({ params }) {
 						{format(new Date(post.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
 					</p>
 				</div>
-
 				<h1 className="font-libre text-4xl mt-8 mb-4 text-center">{post.title}</h1>
 				<h2 className="text-2xl font-light mt-4 mb-8 text-center">{post.subtitle}</h2>
-
 				<div
 					className="image mb-1"
 					style={{

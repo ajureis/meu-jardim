@@ -1,42 +1,15 @@
 import logger from "@/logger";
+import { getPostsByCategory } from "@/services/categories";
+
 import CardPost from "@/components/CardPost";
 import Pagination from "@/components/Pagination";
-
-async function getPostsByCategory(categorySlug, page = 1) {
-	const url = `http://localhost:3042/posts?categorySlug=${categorySlug}&_page=${page}&_per_page=6`;
-
-	try {
-		const response = await fetch(url, {
-			cache: "no-store", // Evita cache
-		});
-
-		if (!response.ok) {
-			logger.error(`Erro ao buscar posts da categoria ${categorySlug}: ${response.statusText}`);
-			return { data: [], prev: null, next: null };
-		}
-
-		logger.info(`Posts da categoria ${categorySlug} buscados com sucesso`);
-
-		const data = await response.json();
-		console.log("data", data);
-
-		if (!data || data.length === 0) {
-			logger.warn(`Nenhum post encontrado para a categoria: ${categorySlug}`);
-			return { data: [], prev: null, next: null };
-		}
-
-		return data;
-	} catch (error) {
-		logger.error(`Erro ao buscar posts da categoria: ${error.message}`);
-		return { data: [], prev: null, next: null };
-	}
-}
 
 export default async function PageCategoria({ params, searchParams }) {
 	const currentPage = parseInt(searchParams?.page) || 1;
 	const { data: posts = [], prev, next } = await getPostsByCategory(params.slug, currentPage);
 
 	if (!posts.length) {
+		logger.warn(`Nenhum post encontrado para a categoria: ${params.slug}`);
 		return <p className="text-center text-gray-600">Nenhum post encontrado para esta categoria.</p>;
 	}
 

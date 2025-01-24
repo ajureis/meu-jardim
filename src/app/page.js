@@ -1,31 +1,13 @@
-import logger from "@/logger";
+import { getAllPosts } from "@/services/posts";
 
 import CardPost from "@/components/CardPost";
 import MainCard from "@/components/MainCardPost";
 import Pagination from "@/components/Pagination";
 
-async function getAllPosts(page) {
-	let url = `http://localhost:3042/posts?_page=${page}&_per_page=7`;
-
-	const response = await fetch(url, {
-		cache: "no-store", // Adiciona esta linha para evitar cache
-	});
-
-	if (!response.ok) {
-		logger.error("Erro ao buscar posts");
-		return { data: [], prev: null, next: null };
-	}
-
-	logger.info("Posts buscados com sucesso");
-	return response.json();
-}
-
 export default async function Home({ searchParams }) {
 	const currentPage = searchParams?.page || 1;
 
 	const { data: posts = [], prev, next } = await getAllPosts(currentPage);
-
-	// console.log("Dados do post:", posts);
 
 	return (
 		<section className={`container w-full md:w-[80%] mx-auto flex-col gap-5 mb-14`}>

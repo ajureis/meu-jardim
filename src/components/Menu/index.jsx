@@ -17,7 +17,6 @@ export default function Menu() {
 				const response = await fetch("http://localhost:3042/posts");
 				const data = await response.json();
 
-				// Criar uma lista única de categorias com slug e nome
 				const uniqueCategories = Array.from(
 					new Map(data.map((post) => [post.categorySlug, post])).values()
 				).map((post) => ({
