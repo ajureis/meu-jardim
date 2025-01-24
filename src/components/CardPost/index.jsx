@@ -1,11 +1,11 @@
 import React from "react";
 import Image from "next/image";
-
-import styles from "./CardPost.module.css";
 import Link from "next/link";
 
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+
+import styles from "./CardPost.module.css";
 
 export default function CardPost({ post }) {
 	return (
