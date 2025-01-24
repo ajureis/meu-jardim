@@ -6,6 +6,7 @@ import { RiMenuFill, RiCloseFill } from "react-icons/ri";
 export default function Menu() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [categories, setCategories] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -27,6 +28,8 @@ export default function Menu() {
 				setCategories(uniqueCategories);
 			} catch (error) {
 				console.error("Erro ao buscar categorias:", error);
+			} finally {
+				setLoading(false);
 			}
 		};
 
@@ -48,17 +51,17 @@ export default function Menu() {
 					isMenuOpen ? "translate-x-0" : "translate-x-full"
 				} lg:translate-x-0 lg:static lg:h-auto lg:w-auto lg:flex lg:space-y-0`}>
 				<ul className="flex flex-col lg:flex-row gap-10 p-4 lg:p-0">
-					{categories.length > 0 ? (
-						categories.map((category, index) => (
-							<li key={index}>
-								<Link href={`/categoria/${category.slug}`} className="flex gap-2 items-center">
-									{category.name}
-								</Link>
-							</li>
-						))
-					) : (
-						<li>Carregando...</li>
-					)}
+					{loading
+						? [...Array(5)].map((_, index) => (
+								<li key={index} className="h-6 w-32 bg-gray-300 animate-pulse rounded-md"></li>
+						  ))
+						: categories.map((category, index) => (
+								<li key={index}>
+									<Link href={`/categoria/${category.slug}`} className="flex gap-2 items-center">
+										{category.name}
+									</Link>
+								</li>
+						  ))}
 				</ul>
 			</nav>
 		</div>

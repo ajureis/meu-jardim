@@ -3,7 +3,7 @@ import logger from "@/logger";
 import { remark } from "remark";
 import html from "remark-html";
 
-export async function getAllPosts(page = 1, perPage = 6) {
+export async function getAllPosts(page = 1, perPage = 7) {
 	try {
 		const response = await api.get("/posts", {
 			params: { _page: page, _per_page: perPage },
