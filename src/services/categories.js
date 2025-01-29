@@ -1,5 +1,5 @@
-import api from "../utils/api";
-import logger from "@/logger";
+import api from "@/utils/api";
+import logger from "@/utils/logger";
 
 export async function getPostsByCategory(categorySlug, page = 1, perPage = 6) {
 	try {
@@ -7,7 +7,7 @@ export async function getPostsByCategory(categorySlug, page = 1, perPage = 6) {
 			params: { categorySlug, _page: page, _per_page: perPage },
 		});
 
-		if (!response.data.data.length) {
+		if (!response.data || response.data.length === 0) {
 			logger.warn(`Nenhum post encontrado para a categoria: ${categorySlug}`);
 			return { data: [], prev: null, next: null };
 		}
@@ -28,6 +28,7 @@ export async function getCategories() {
 			return [];
 		}
 
+		logger.info(`Categorias carregadas: ${response.data.length}`);
 		return response.data;
 	} catch (error) {
 		logger.error(`Erro ao buscar categorias: ${error.message}`);

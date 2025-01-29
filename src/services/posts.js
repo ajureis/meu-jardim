@@ -1,5 +1,5 @@
-import api from "../utils/api";
-import logger from "@/logger";
+import api from "@/utils/api";
+import logger from "@/utils/logger";
 
 import { remark } from "remark";
 import html from "remark-html";

@@ -1,4 +1,4 @@
-import logger from "@/logger";
+import logger from "@/utils/logger";
 import { getPostBySlug } from "@/services/posts";
 
 import Image from "next/image";

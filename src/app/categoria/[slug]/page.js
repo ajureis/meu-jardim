@@ -1,4 +1,4 @@
-import logger from "@/logger";
+import logger from "@/utils/logger";
 import { getPostsByCategory } from "@/services/categories";
 
 import CardPost from "@/components/CardPost";
