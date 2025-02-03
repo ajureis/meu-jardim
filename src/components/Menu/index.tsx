@@ -1,12 +1,17 @@
+"use client";
+import React, { JSX } from "react";
 import { useState, useEffect } from "react";
+import { getCategories } from "@/services/categories";
 import Link from "next/link";
 
 import { RiMenuFill, RiCloseFill } from "react-icons/ri";
 
-export default function Menu() {
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [categories, setCategories] = useState([]);
-	const [loading, setLoading] = useState(true);
+import { CategoryProps } from "@/types/types";
+
+const Menu = (): JSX.Element => {
+	const [categories, setCategories] = useState<CategoryProps[]>([]);
+	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -15,17 +20,8 @@ export default function Menu() {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const response = await fetch("http://localhost:3042/posts");
-				const data = await response.json();
-
-				const uniqueCategories = Array.from(
-					new Map(data.map((post) => [post.categorySlug, post])).values()
-				).map((post) => ({
-					slug: post.categorySlug,
-					name: post.category,
-				}));
-
-				setCategories(uniqueCategories);
+				const categoriesData: CategoryProps[] = await getCategories();
+				setCategories(categoriesData);
 			} catch (error) {
 				console.error("Erro ao buscar categorias:", error);
 			} finally {
@@ -55,8 +51,8 @@ export default function Menu() {
 						? [...Array(5)].map((_, index) => (
 								<li key={index} className="h-6 w-32 bg-gray-300 animate-pulse rounded-md"></li>
 						  ))
-						: categories.map((category, index) => (
-								<li key={index}>
+						: categories.map((category) => (
+								<li key={category.slug}>
 									<Link href={`/categoria/${category.slug}`} className="flex gap-2 items-center">
 										{category.name}
 									</Link>
@@ -66,4 +62,6 @@ export default function Menu() {
 			</nav>
 		</div>
 	);
-}
+};
+
+export default Menu;

@@ -1,4 +1,3 @@
-import logger from "@/utils/logger";
 import { getPostsByCategory } from "@/services/categories";
 
 import CardPost from "@/components/CardPost";
@@ -9,7 +8,6 @@ export default async function PageCategoria({ params, searchParams }) {
 	const { data: posts = [], prev, next } = await getPostsByCategory(params.slug, currentPage);
 
 	if (!posts.length) {
-		logger.warn(`Nenhum post encontrado para a categoria: ${params.slug}`);
 		return <p className="text-center text-gray-600">Nenhum post encontrado para esta categoria.</p>;
 	}
 

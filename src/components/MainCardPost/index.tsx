@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { PostProps } from "@/types/types";
 
-export default function MainCard({ post }) {
+const MainCard: React.FC<PostProps> = ({ post }) => {
 	return (
 		<div className="relative w-full h-80 rounded mb-4 overflow-hidden">
 			<Link href={`/post/${post.slug}`}>
@@ -25,4 +26,6 @@ export default function MainCard({ post }) {
 			</Link>
 		</div>
 	);
-}
+};
+
+export default MainCard;

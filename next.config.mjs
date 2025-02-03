@@ -12,6 +12,17 @@ const nextConfig = {
 			},
 		],
 	},
+	// Ajuste do Webpack para Pino funcionar no App Router
+	webpack: (config, { isServer }) => {
+		if (isServer) {
+			config.externals = [...(config.externals || []), "pino-pretty", "thread-stream"];
+		}
+		return config;
+	},
+
+	experimental: {
+		serverComponentsExternalPackages: ["pino", "pino-pretty"],
+	},
 };
 
 export default nextConfig;

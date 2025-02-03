@@ -7,7 +7,9 @@ import { ptBR } from "date-fns/locale";
 
 import styles from "./CardPost.module.css";
 
-export default function CardPost({ post }) {
+import { PostProps } from "@/types/types";
+
+const CardPost: React.FC<PostProps> = ({ post }) => {
 	return (
 		<article className={styles.card}>
 			<Link href={`/post/${post.slug}`}>
@@ -20,7 +22,6 @@ export default function CardPost({ post }) {
 						sizes="457px"
 						style={{ objectFit: "cover" }}
 					/>
-
 					<span className="p-1 absolute bottom-3 left-2 text-xs text-white bg-secondary-green rounded inline">
 						{post.category}
 					</span>
@@ -34,4 +35,6 @@ export default function CardPost({ post }) {
 			</Link>
 		</article>
 	);
-}
+};
+
+export default CardPost;

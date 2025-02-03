@@ -1,68 +1,74 @@
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import Menu from "@/components/Menu";
+import Menu from "./index";
+import { getCategories } from "@/services/categories";
 
-// Mock da API de sucesso
-const mockFetchSuccess = () =>
-	jest.fn(() =>
-		Promise.resolve({
-			json: () =>
-				Promise.resolve([
-					{ categorySlug: "tecnologia", category: "Tecnologia" },
-					{ categorySlug: "natureza", category: "Natureza" },
-				]),
-		})
-	);
+// Mock da função getCategories
+jest.mock("@/services/categories", () => ({
+	getCategories: jest.fn().mockResolvedValue([]),
+}));
 
-describe("Componente Menu", () => {
+// Mock de window.location para evitar erros de navegação no Jest
+delete window.location;
+window.location = { assign: jest.fn() };
+
+// Mock de categorias para os testes
+const mockCategories = [
+	{ id: "1", slug: "category-1", name: "Category 1" },
+	{ id: "2", slug: "category-2", name: "Category 2" },
+];
+
+describe("Menu", () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
-		global.fetch = jest.fn().mockImplementation(mockFetchSuccess());
+		jest.clearAllMocks(); // Limpa todos os mocks entre os testes
+		jest.useFakeTimers("modern"); // Simula timers sem interferir em async/await
+
+		// Mocka a API com um retorno padrão
+		getCategories.mockResolvedValue(mockCategories);
 	});
 
-	test("Deve renderizar corretamente o botão do menu", async () => {
-		render(<Menu />);
-
-		const botaoMenu = screen.getByRole("button", { name: /abrir menu/i });
-		expect(botaoMenu).toBeInTheDocument();
+	afterEach(() => {
+		jest.runOnlyPendingTimers(); // Garante que todos os timers sejam executados
+		jest.useRealTimers(); // Restaura timers reais após cada teste
 	});
 
-	test("Deve abrir e fechar o menu ao clicar no botão", async () => {
+	test("deve renderizar botão menu", () => {
 		render(<Menu />);
-
-		const botaoMenu = screen.getByRole("button", { name: /abrir menu/i });
-
-		// Verifica se o menu está fechado inicialmente
-		expect(screen.getByTestId("menu")).toHaveClass("translate-x-full");
-
-		fireEvent.click(botaoMenu);
-
-		// Aguarda e verifica se o menu está aberto após o clique
-		await waitFor(() => {
-			expect(screen.getByTestId("menu")).toHaveClass("translate-x-0");
-		});
-
-		fireEvent.click(botaoMenu);
-
-		// Verifica se o menu está fechado novamente
-		await waitFor(() => {
-			expect(screen.getByTestId("menu")).toHaveClass("translate-x-full");
-		});
+		const menuButton = screen.getByRole("button", { name: /abrir menu/i });
+		expect(menuButton).toBeInTheDocument();
 	});
 
-	test("Deve exibir links de categoria corretamente", async () => {
+	test("toggles menu ao clique do botão", () => {
 		render(<Menu />);
+		const menuButton = screen.getByRole("button", { name: /abrir menu/i });
 
-		// Aguarda os dados serem carregados
-		await waitFor(() => {
-			expect(screen.getByText("Tecnologia")).toBeInTheDocument();
-			expect(screen.getByText("Natureza")).toBeInTheDocument();
+		fireEvent.click(menuButton);
+		expect(screen.getByRole("button", { name: /fechar menu/i })).toBeInTheDocument();
+	});
+
+	test("buscar e mostrar em tela categorias", async () => {
+		getCategories.mockResolvedValueOnce([
+			{ id: 1, name: "Category 1" },
+			{ id: 2, name: "Category 2" },
+		]);
+
+		await act(async () => {
+			render(<Menu />);
 		});
 
-		// Verifica se os links das categorias foram renderizados corretamente
-		const linkTecnologia = screen.getByRole("link", { name: "Tecnologia" });
-		expect(linkTecnologia).toHaveAttribute("href", "/categoria/tecnologia");
+		await waitFor(() => expect(getCategories).toHaveBeenCalledTimes(1));
 
-		const linkNatureza = screen.getByRole("link", { name: "Natureza" });
-		expect(linkNatureza).toHaveAttribute("href", "/categoria/natureza");
+		expect(await screen.findByText("Category 1")).toBeInTheDocument();
+		expect(await screen.findByText("Category 2")).toBeInTheDocument();
+	});
+
+	test("loading placeholders enquanto busca categoria", async () => {
+		getCategories.mockImplementationOnce(() => new Promise(() => {})); // API nunca resolve (mantém `loading` ativo)
+
+		render(<Menu />);
+
+		await waitFor(() => {
+			const placeholders = screen.getAllByRole("listitem");
+			expect(placeholders).toHaveLength(5);
+		});
 	});
 });

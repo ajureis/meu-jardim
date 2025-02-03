@@ -1,5 +1,5 @@
 import api from "@/utils/api";
-import logger from "@/utils/logger";
+import logger from "@/utils/logger.server";
 
 export async function getPostsByCategory(categorySlug, page = 1, perPage = 6) {
 	try {

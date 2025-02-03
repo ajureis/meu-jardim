@@ -1,4 +1,3 @@
-import logger from "@/utils/logger";
 import { getPostBySlug } from "@/services/posts";
 
 import Image from "next/image";
@@ -15,7 +14,6 @@ export default async function PagePost({ params }) {
 	const post = await getPostBySlug(params.slug);
 
 	if (!post) {
-		logger.warn(`Nenhum post encontrado para o slug: ${params.slug}`);
 		return <p className="text-center text-gray-500">Post não encontrado.</p>;
 	}
 
