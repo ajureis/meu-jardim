@@ -10,8 +10,16 @@ import ButtonLink from "@/components/ButtonLink";
 
 import styles from "./page.module.css";
 
-export default async function PagePost({ params }) {
-	const post = await getPostBySlug(params.slug);
+import { IPost } from "@/types/types";
+
+interface PagePostProps {
+	params: {
+		slug: string;
+	};
+}
+
+const PagePost = async ({ params }: PagePostProps) => {
+	const post: IPost | null = await getPostBySlug(params.slug);
 
 	if (!post) {
 		return <p className="text-center text-gray-500">Post não encontrado.</p>;
@@ -50,6 +58,7 @@ export default async function PagePost({ params }) {
 					<figcaption className=" italic text-gray-600">{post.figcaption}</figcaption>
 					<ButtonLink
 						href="#"
+						aria-label="Compartilhar este post"
 						className=" border-main-green text-main-green bg-white hover:text-white">
 						<FaRegShareFromSquare size={18} />
 						Compartilhar
@@ -62,4 +71,6 @@ export default async function PagePost({ params }) {
 			</article>
 		</section>
 	);
-}
+};
+
+export default PagePost;

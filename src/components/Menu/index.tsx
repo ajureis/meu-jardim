@@ -1,36 +1,29 @@
 "use client";
 import React, { JSX } from "react";
-import { useState, useEffect } from "react";
+import useSWR from "swr";
+import { useState } from "react";
 import { getCategories } from "@/services/categories";
 import Link from "next/link";
 
 import { RiMenuFill, RiCloseFill } from "react-icons/ri";
 
-import { CategoryProps } from "@/types/types";
+import { ICategoryProps } from "@/types/types";
+
+const fetcher = async (): Promise<ICategoryProps[]> => {
+	return getCategories();
+};
 
 const Menu = (): JSX.Element => {
-	const [categories, setCategories] = useState<CategoryProps[]>([]);
-	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(true);
+	const { data: categories = [], error, isValidating } = useSWR("categories", fetcher);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const toggleMenu = () => {
-		setIsMenuOpen(!isMenuOpen);
+		setIsMenuOpen((prev) => !prev);
 	};
 
-	useEffect(() => {
-		const fetchCategories = async () => {
-			try {
-				const categoriesData: CategoryProps[] = await getCategories();
-				setCategories(categoriesData);
-			} catch (error) {
-				console.error("Erro ao buscar categorias:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchCategories();
-	}, []);
+	if (error) {
+		return <p className="text-red-500">Erro ao carregar categorias.</p>;
+	}
 
 	return (
 		<div className="relative">
@@ -47,7 +40,7 @@ const Menu = (): JSX.Element => {
 					isMenuOpen ? "translate-x-0" : "translate-x-full"
 				} lg:translate-x-0 lg:static lg:h-auto lg:w-auto lg:flex lg:space-y-0`}>
 				<ul className="flex flex-col lg:flex-row gap-10 p-4 lg:p-0">
-					{loading
+					{isValidating
 						? [...Array(5)].map((_, index) => (
 								<li key={index} className="h-6 w-32 bg-gray-300 animate-pulse rounded-md"></li>
 						  ))

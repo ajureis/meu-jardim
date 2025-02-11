@@ -1,15 +1,15 @@
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { PostProps } from "@/types/types";
 
-const MainCard: React.FC<PostProps> = ({ post }) => {
+import { IPostProps } from "@/types/types";
+
+const MainCard = ({ post }: IPostProps) => {
 	return (
 		<div className="relative w-full h-80 rounded mb-4 overflow-hidden">
-			<Link href={`/post/${post.slug}`}>
+			<Link href={`/post/${post.slug}`} aria-label={`Leia mais sobre ${post.title}`}>
 				<Image
 					src={post.image}
-					alt={post.title}
+					alt={post.title || "Imagem do post"}
 					fill
 					style={{ objectFit: "cover" }}
 					className="rounded"

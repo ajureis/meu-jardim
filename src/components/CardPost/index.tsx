@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,9 +6,9 @@ import { ptBR } from "date-fns/locale";
 
 import styles from "./CardPost.module.css";
 
-import { PostProps } from "@/types/types";
+import { IPostProps } from "@/types/types";
 
-const CardPost: React.FC<PostProps> = ({ post }) => {
+const CardPost = ({ post }: IPostProps) => {
 	return (
 		<article className={styles.card}>
 			<Link href={`/post/${post.slug}`}>

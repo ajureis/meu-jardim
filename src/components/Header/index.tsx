@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ const Header = (): JSX.Element => {
 		<header className={`fixed w-full p-2 md:p-5 shadow-md bg-white  z-10  `}>
 			<div className="container w-full   mx-auto flex gap-4 items-center justify-between lg:justify-center">
 				<div data-testid="logo">
-					<Link href="/">
+					<Link href="/" aria-label="Página Inicial">
 						<Image src="/logo.png" width={140} height={24} alt="Logo Meu Jardim" priority />
 					</Link>
 				</div>

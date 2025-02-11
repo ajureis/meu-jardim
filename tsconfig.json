@@ -26,6 +26,12 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+	"include": [
+		"next-env.d.ts",
+		".next/types/**/*.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"src/app/categoria/[slug]/page.tsx"
+	],
 	"exclude": ["node_modules"]
 }
