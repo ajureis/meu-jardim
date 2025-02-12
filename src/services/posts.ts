@@ -18,9 +18,9 @@ export async function getAllPosts(page = 1, perPage = 7): Promise<GetAllPostsRes
 			params: { _page: page, _per_page: perPage },
 		});
 
-		logger.info(`Resposta da API: ${JSON.stringify(response.data)}`);
+		console.log(`Resposta da API: ${JSON.stringify(response.data)}`);
 
-		if (!response.data.data || !Array.isArray(response.data.data)) {
+		if (!response.data || !Array.isArray(response.data.data)) {
 			logger.warn("Nenhum post encontrado.");
 			return { data: [], prev: null, next: null };
 		}
