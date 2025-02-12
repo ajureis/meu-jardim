@@ -1,11 +1,10 @@
-import { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import SearchBar from "@/components/SearchBar";
 import Menu from "@/components/Menu";
 
-const Header = (): JSX.Element => {
+const Header = () => {
 	return (
 		<header className={`fixed w-full p-2 md:p-5 shadow-md bg-white  z-10  `}>
 			<div className="container w-full   mx-auto flex gap-4 items-center justify-between lg:justify-center">

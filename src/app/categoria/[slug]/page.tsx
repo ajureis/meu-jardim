@@ -21,7 +21,6 @@ interface PageCategoriaProps {
 }
 
 const PageCategoria = async ({ params, searchParams }: PageCategoriaProps) => {
-	// const currentPage = parseInt(searchParams?.page) || 1;
 	const currentPage = parseInt(searchParams?.page || "1", 10);
 
 	const {

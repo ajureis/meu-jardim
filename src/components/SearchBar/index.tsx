@@ -1,7 +1,6 @@
-import { JSX } from "react";
 import { FiSearch } from "react-icons/fi";
 
-const SearchBar = (): JSX.Element => {
+const SearchBar = () => {
 	return (
 		<div className="w-64 md:w-48 flex items-center justify-between bg-main-light-grey rounded-md border">
 			<label htmlFor="search" className="sr-only">

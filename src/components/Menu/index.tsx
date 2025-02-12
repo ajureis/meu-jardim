@@ -1,5 +1,4 @@
 "use client";
-import React, { JSX } from "react";
 import useSWR from "swr";
 import { useState } from "react";
 import { getCategories } from "@/services/categories";
@@ -13,7 +12,7 @@ const fetcher = async (): Promise<ICategoryProps[]> => {
 	return getCategories();
 };
 
-const Menu = (): JSX.Element => {
+const Menu = () => {
 	const { data: categories = [], error, isValidating } = useSWR("categories", fetcher);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
