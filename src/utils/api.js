@@ -4,11 +4,14 @@ import axios from "axios";
 const api = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3042",
 	timeout: 10000, // Tempo limite de resposta (10 segundos)
+
 	headers: {
 		"Content-Type": "application/json",
 		Accept: "application/json",
 	},
 });
+
+console.log("Base URL:", process.env.NEXT_PUBLIC_API_URL);
 
 // Interceptor para logs de requisição
 api.interceptors.request.use(
