@@ -23,7 +23,16 @@ export async function getAllPosts(page = 1, perPage = 7): Promise<GetAllPostsRes
 			return { data: [], prev: null, next: null };
 		}
 
-		return response.data;
+		if (!response.data.data || !Array.isArray(response.data.data)) {
+			logger.warn("Nenhum post encontrado.");
+			return { data: [], prev: null, next: null };
+		}
+
+		return {
+			data: response.data.data,
+			prev: response.data.prev,
+			next: response.data.next,
+		};
 	} catch (error: any) {
 		logger.error(`Erro ao buscar posts: ${error.message}`);
 		return { data: [], prev: null, next: null };
