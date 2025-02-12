@@ -1,10 +1,10 @@
 {
 	"compilerOptions": {
-		"target": "es2016",
-		//  "target": "ESNext",
+		// "target": "es2016",
+		"target": "ESNext",
 
-		"module": "commonjs",
-		// "module": "ESNext",
+		// "module": "commonjs",
+		"module": "ESNext",
 
 		"esModuleInterop": true,
 		"strict": true,
