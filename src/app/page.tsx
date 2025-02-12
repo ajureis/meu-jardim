@@ -4,10 +4,24 @@ import CardPost from "@/components/CardPost";
 import MainCard from "@/components/MainCardPost";
 import Pagination from "@/components/Pagination";
 
-export default async function Home({ searchParams }) {
-	const currentPage = searchParams?.page || 1;
+import { IPost } from "@/types/types";
 
-	const { data: posts = [], prev, next } = await getAllPosts(currentPage);
+interface getAllPostsResponse {
+	data: IPost[];
+	prev?: number;
+	next?: number;
+}
+
+interface HomeProps {
+	searchParams: {
+		page?: string;
+	};
+}
+
+const Home = async ({ searchParams }: HomeProps) => {
+	const currentPage = parseInt(searchParams?.page as string, 10) || 1;
+
+	const { data: posts = [], prev, next }: getAllPostsResponse = await getAllPosts(currentPage);
 
 	return (
 		<section className={`container w-full md:w-[80%] mx-auto flex-col gap-5 mb-14`}>
@@ -24,4 +38,6 @@ export default async function Home({ searchParams }) {
 			</div>
 		</section>
 	);
-}
+};
+
+export default Home;

@@ -17,12 +17,16 @@ const libre_baskerville = Libre_Baskerville({
 	display: "swap",
 });
 
+interface RootLayoutProps {
+	children: React.ReactNode;
+}
+
 export const metadata = {
 	title: "Meu Jardim",
 	description: "Uma rede social para amantes de plantas",
 };
 
-export default function RootLayout({ children }) {
+const RootLayout = ({ children }: RootLayoutProps) => {
 	return (
 		<html lang="pt-br">
 			<body className={`${nunito.variable} ${libre_baskerville.variable}`}>
@@ -31,4 +35,6 @@ export default function RootLayout({ children }) {
 			</body>
 		</html>
 	);
-}
+};
+
+export default RootLayout;

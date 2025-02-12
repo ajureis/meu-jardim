@@ -1,4 +1,4 @@
-export default function Loading() {
+const Loading = () => {
 	return (
 		<section className="container w-full md:w-[80%] mx-auto gap-5 mb-14 mt-10 animate-pulse">
 			<article className="flex flex-col gap-5">
@@ -25,4 +25,6 @@ export default function Loading() {
 			</article>
 		</section>
 	);
-}
+};
+
+export default Loading;
