@@ -5,12 +5,6 @@ import Pagination from "@/components/Pagination";
 
 import { IPost } from "@/types/types";
 
-interface GetPostsByCategoryResponse {
-	data: IPost[];
-	prev?: number;
-	next?: number;
-}
-
 interface PageCategoriaProps {
 	params: {
 		slug: string;
@@ -18,6 +12,12 @@ interface PageCategoriaProps {
 	searchParams: {
 		page?: string;
 	};
+}
+
+interface GetPostsByCategoryResponse {
+	data: IPost[];
+	prev: number | null;
+	next: number | null;
 }
 
 const PageCategoria = async ({ params, searchParams }: PageCategoriaProps) => {

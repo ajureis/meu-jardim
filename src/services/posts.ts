@@ -4,9 +4,17 @@ import logger from "@/utils/logger.server";
 import { remark } from "remark";
 import html from "remark-html";
 
-export async function getAllPosts(page = 1, perPage = 7) {
+import { IPost } from "@/types/types";
+
+interface GetAllPostsResponse {
+	data: IPost[];
+	prev: number | null;
+	next: number | null;
+}
+
+export async function getAllPosts(page = 1, perPage = 7): Promise<GetAllPostsResponse> {
 	try {
-		const response = await api.get("/posts", {
+		const response = await api.get<GetAllPostsResponse>("/posts", {
 			params: { _page: page, _per_page: perPage },
 		});
 
@@ -16,15 +24,15 @@ export async function getAllPosts(page = 1, perPage = 7) {
 		}
 
 		return response.data;
-	} catch (error) {
+	} catch (error: any) {
 		logger.error(`Erro ao buscar posts: ${error.message}`);
 		return { data: [], prev: null, next: null };
 	}
 }
 
-export async function getPostBySlug(slug) {
+export async function getPostBySlug(slug: string): Promise<IPost | null> {
 	try {
-		const response = await api.get(`/posts`, { params: { slug } });
+		const response = await api.get<IPost[]>(`/posts`, { params: { slug } });
 
 		if (!response.data.length) {
 			logger.warn(`Nenhum post encontrado para o slug: ${slug}`);
@@ -43,7 +51,7 @@ export async function getPostBySlug(slug) {
 		post.content = processedContent.toString();
 
 		return post;
-	} catch (error) {
+	} catch (error: any) {
 		logger.error(`Erro ao buscar o post: ${error.message}`);
 		return null;
 	}

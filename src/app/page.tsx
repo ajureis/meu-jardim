@@ -6,22 +6,22 @@ import Pagination from "@/components/Pagination";
 
 import { IPost } from "@/types/types";
 
-interface getAllPostsResponse {
-	data: IPost[];
-	prev?: number;
-	next?: number;
-}
-
 interface HomeProps {
 	searchParams: {
 		page?: string;
 	};
 }
 
+interface GetAllPostsResponse {
+	data: IPost[];
+	prev: number | null;
+	next: number | null;
+}
+
 const Home = async ({ searchParams }: HomeProps) => {
 	const currentPage = parseInt(searchParams?.page as string, 10) || 1;
 
-	const { data: posts = [], prev, next }: getAllPostsResponse = await getAllPosts(currentPage);
+	const { data: posts = [], prev, next }: GetAllPostsResponse = await getAllPosts(currentPage);
 
 	return (
 		<section className={`container w-full md:w-[80%] mx-auto flex-col gap-5 mb-14`}>
