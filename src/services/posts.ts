@@ -17,17 +17,17 @@ export async function getAllPosts(page = 1, perPage = 7): Promise<GetAllPostsRes
 		const response = await api.get<GetAllPostsResponse>("/posts", {
 			params: { _page: page, _per_page: perPage },
 		});
-
+		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
+		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
 		const postsData = response.data?.data;
+
 		if (!postsData) {
 			logger.warn("Nenhum post encontrado.");
 			return { data: [], prev: null, next: null };
 		}
 		logger.info(`Posts encontrados: ${postsData.length}`);
-		logger.info(
-			`Conteúdo completo da resposta antes de retornar: ${JSON.stringify(response.data)}`
-		);
-		return response.data;
+
+		return { data: postsData, prev: response.data.prev, next: response.data.next };
 	} catch (error: any) {
 		logger.error(`Erro ao buscar posts: ${error.message}`);
 		return { data: [], prev: null, next: null };
