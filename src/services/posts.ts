@@ -18,11 +18,15 @@ export async function getAllPosts(page = 1, perPage = 7): Promise<GetAllPostsRes
 			params: { _page: page, _per_page: perPage },
 		});
 
-		if (!response.data) {
+		const postsData = response.data?.data;
+		if (!postsData) {
 			logger.warn("Nenhum post encontrado.");
 			return { data: [], prev: null, next: null };
 		}
-
+		logger.info(`Posts encontrados: ${postsData.length}`);
+		logger.info(
+			`Conteúdo completo da resposta antes de retornar: ${JSON.stringify(response.data)}`
+		);
 		return response.data;
 	} catch (error: any) {
 		logger.error(`Erro ao buscar posts: ${error.message}`);
