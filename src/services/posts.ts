@@ -43,29 +43,29 @@ export async function getAllPosts(
 
 export async function getPostBySlug(slug: string): Promise<IPost | null> {
 	try {
-		const response = await api.get<IPost[]>(`/posts`, { params: { slug } });
+		// Faz a requisição para a API
+		const response = await api.get<{ data: IPost[] }>(`/posts`, { params: { slug } });
 
 		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
-		logger.info(`categorySlug GetPostsByCategoryResponse: ${slug}`);
+		logger.info(`Slug usado: ${slug}`);
+		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
 
-		if (!response.data) {
+		const posts = response.data?.data;
+
+		if (!posts || !Array.isArray(posts) || posts.length === 0) {
 			logger.warn(`Nenhum post encontrado para o slug: ${slug}`);
 			return null;
 		}
 
-		logger.info(`Post recebido: ${JSON.stringify(response.data)}`);
-
-		const post = response.data[0];
-		logger.info(`Post: ${JSON.stringify(post)}`);
+		const post = posts[0];
+		logger.info(`Post encontrado: ${JSON.stringify(post)}`);
 
 		if (!post.content) {
 			logger.error("O campo 'content' está ausente no post retornado.");
 			return null;
 		}
 
-		logger.info(`Post content: ${JSON.stringify(post.content)}`);
-
-		// Processando conteúdo Markdown para HTML
+		// Processa o conteúdo Markdown para HTML
 		const processedContent = await remark().use(html).process(post.content);
 		post.content = processedContent.toString();
 
