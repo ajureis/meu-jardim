@@ -16,20 +16,15 @@ export async function getAllPosts(
 	page: number = 1,
 	perPage: number = 7
 ): Promise<GetAllPostsResponse> {
-	if (page <= 0) {
-		logger.warn("O parâmetro 'page' deve ser um número maior que zero.");
-	}
-	if (perPage <= 0) {
-		logger.warn("O parâmetro 'perPage' deve ser um número maior que zero.");
-	}
-
 	try {
 		const response = await api.get<GetAllPostsResponse>("/posts", {
 			params: { _page: page, _per_page: perPage },
 		});
+		// logger.info(`Page getAllPosts: ${page}`);
+		// logger.info(`PerPage getAllPosts: ${perPage}`);
 
-		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
-		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
+		// logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
+		// logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
 
 		const postsData = response.data?.data;
 
@@ -37,7 +32,7 @@ export async function getAllPosts(
 			logger.warn("Nenhum post encontrado.");
 			return { data: [], prev: null, next: null };
 		}
-		logger.info(`Posts encontrados: ${postsData.length}`);
+		// logger.info(`Posts encontrados: ${postsData.length}`);
 
 		return { data: postsData, prev: response.data.prev, next: response.data.next };
 	} catch (error: any) {
@@ -50,12 +45,16 @@ export async function getPostBySlug(slug: string): Promise<IPost | null> {
 	try {
 		const response = await api.get<IPost[]>(`/posts`, { params: { slug } });
 
-		if (!response.data.length) {
+		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
+		logger.info(`categorySlug GetPostsByCategoryResponse: ${slug}`);
+
+		if (!response.data) {
 			logger.warn(`Nenhum post encontrado para o slug: ${slug}`);
 			return null;
 		}
 
 		const post = response.data[0];
+		logger.info(`Post recebido: ${JSON.stringify(post)}`);
 
 		if (!post.content) {
 			logger.error("O campo 'content' está ausente no post retornado.");

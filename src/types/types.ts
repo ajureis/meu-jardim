@@ -16,7 +16,6 @@ export interface IPostProps {
 }
 
 export interface ICategoryProps {
-	id: string;
 	slug: string;
 	name: string;
 }
