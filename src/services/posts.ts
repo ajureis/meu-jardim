@@ -20,11 +20,11 @@ export async function getAllPosts(
 		const response = await api.get<GetAllPostsResponse>("/posts", {
 			params: { _page: page, _per_page: perPage },
 		});
-		// logger.info(`Page getAllPosts: ${page}`);
-		// logger.info(`PerPage getAllPosts: ${perPage}`);
+		logger.info(`Page getAllPosts: ${page}`);
+		logger.info(`PerPage getAllPosts: ${perPage}`);
 
-		// logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
-		// logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
+		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
+		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
 
 		const postsData = response.data?.data;
 
@@ -32,7 +32,7 @@ export async function getAllPosts(
 			logger.warn("Nenhum post encontrado.");
 			return { data: [], prev: null, next: null };
 		}
-		// logger.info(`Posts encontrados: ${postsData.length}`);
+		logger.info(`Posts encontrados: ${postsData.length}`);
 
 		return { data: postsData, prev: response.data.prev, next: response.data.next };
 	} catch (error: any) {
@@ -43,29 +43,29 @@ export async function getAllPosts(
 
 export async function getPostBySlug(slug: string): Promise<IPost | null> {
 	try {
-		// Faz a requisição para a API
-		const response = await api.get<{ data: IPost[] }>(`/posts`, { params: { slug } });
+		const response = await api.get<IPost[]>(`/posts`, { params: { slug } });
 
 		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
-		logger.info(`Slug usado: ${slug}`);
-		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
+		logger.info(`categorySlug GetPostsByCategoryResponse: ${slug}`);
 
-		const posts = response.data?.data;
-
-		if (!posts || !Array.isArray(posts) || posts.length === 0) {
+		if (!response.data) {
 			logger.warn(`Nenhum post encontrado para o slug: ${slug}`);
 			return null;
 		}
 
-		const post = posts[0];
-		logger.info(`Post encontrado: ${JSON.stringify(post)}`);
+		logger.info(`Post recebido: ${JSON.stringify(response.data)}`);
+
+		const post = response.data[0];
+		logger.info(`Post: ${JSON.stringify(post)}`);
 
 		if (!post.content) {
 			logger.error("O campo 'content' está ausente no post retornado.");
 			return null;
 		}
 
-		// Processa o conteúdo Markdown para HTML
+		logger.info(`Post content: ${JSON.stringify(post.content)}`);
+
+		// Processando conteúdo Markdown para HTML
 		const processedContent = await remark().use(html).process(post.content);
 		post.content = processedContent.toString();
 
