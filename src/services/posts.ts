@@ -53,13 +53,17 @@ export async function getPostBySlug(slug: string): Promise<IPost | null> {
 			return null;
 		}
 
+		logger.info(`Post recebido: ${JSON.stringify(response.data)}`);
+
 		const post = response.data[0];
-		logger.info(`Post recebido: ${JSON.stringify(post)}`);
+		logger.info(`Post: ${JSON.stringify(post)}`);
 
 		if (!post.content) {
 			logger.error("O campo 'content' está ausente no post retornado.");
 			return null;
 		}
+
+		logger.info(`Post content: ${JSON.stringify(post.content)}`);
 
 		// Processando conteúdo Markdown para HTML
 		const processedContent = await remark().use(html).process(post.content);
