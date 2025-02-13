@@ -24,7 +24,7 @@ export async function getPostsByCategory(
 		logger.info(`PerPage GetPostsByCategoryResponse: ${perPage}`);
 
 		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
-		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
+		//logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
 
 		const categoryData = response.data?.data;
 		if (!categoryData) {

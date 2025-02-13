@@ -24,9 +24,9 @@ export async function getAllPosts(
 		logger.info(`PerPage getAllPosts: ${perPage}`);
 
 		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
-		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
+		//logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
 
-		const postsData = response.data?.data;
+		const postsData = response.data.data;
 
 		if (!postsData) {
 			logger.warn("Nenhum post encontrado.");
@@ -53,7 +53,7 @@ export async function getPostBySlug(slug: string): Promise<IPost | null> {
 			return null;
 		}
 
-		logger.info(`Post recebido: ${JSON.stringify(response.data)}`);
+		//logger.info(`Post recebido: ${JSON.stringify(response.data)}`);
 
 		const post = response.data[0];
 		logger.info(`Post: ${JSON.stringify(post)}`);
@@ -63,7 +63,7 @@ export async function getPostBySlug(slug: string): Promise<IPost | null> {
 			return null;
 		}
 
-		logger.info(`Post content: ${JSON.stringify(post.content)}`);
+		// logger.info(`Post content: ${JSON.stringify(post.content)}`);
 
 		// Processando conteúdo Markdown para HTML
 		const processedContent = await remark().use(html).process(post.content);
