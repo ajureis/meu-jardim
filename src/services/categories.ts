@@ -18,10 +18,15 @@ export async function getPostsByCategory(
 			params: { categorySlug, _page: page, _per_page: perPage },
 		});
 
-		if (!response.data || response.data.data.length === 0) {
+		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
+		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
+
+		const categoryData = response.data?.data;
+		if (!categoryData) {
 			logger.warn(`Nenhum post encontrado para a categoria: ${categorySlug}`);
 			return { data: [], prev: null, next: null };
 		}
+		logger.info(`Posts encontrados: ${categoryData.length}`);
 
 		return response.data;
 	} catch (error: any) {

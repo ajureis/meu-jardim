@@ -12,13 +12,25 @@ interface GetAllPostsResponse {
 	next: number | null;
 }
 
-export async function getAllPosts(page = 1, perPage = 7): Promise<GetAllPostsResponse> {
+export async function getAllPosts(
+	page: number = 1,
+	perPage: number = 7
+): Promise<GetAllPostsResponse> {
+	if (page <= 0) {
+		logger.warn("O parâmetro 'page' deve ser um número maior que zero.");
+	}
+	if (perPage <= 0) {
+		logger.warn("O parâmetro 'perPage' deve ser um número maior que zero.");
+	}
+
 	try {
 		const response = await api.get<GetAllPostsResponse>("/posts", {
 			params: { _page: page, _per_page: perPage },
 		});
+
 		logger.info(`Requisição feita para URL: ${process.env.NEXT_PUBLIC_API_URL}/posts`);
 		logger.info(`Dados recebidos: ${JSON.stringify(response.data)}`);
+
 		const postsData = response.data?.data;
 
 		if (!postsData) {
