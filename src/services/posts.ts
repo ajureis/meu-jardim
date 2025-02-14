@@ -56,7 +56,7 @@ export async function getPostBySlug(slug: string): Promise<IPost | null> {
 		//logger.info(`Post recebido: ${JSON.stringify(response.data)}`);
 
 		const post = response.data[0];
-		logger.info(`Post: ${JSON.stringify(post)}`);
+		// logger.info(`Post: ${JSON.stringify(post)}`);
 
 		if (!post.content) {
 			logger.error("O campo 'content' está ausente no post retornado.");

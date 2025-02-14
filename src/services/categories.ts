@@ -49,7 +49,8 @@ export async function getCategories(): Promise<ICategoryProps[]> {
 			return [];
 		}
 
-		logger.info(`Categorias carregadas: ${response.data.length}`);
+		//logger.info(`Categorias carregadas: ${response.data.length}`);
+
 		return response.data;
 	} catch (error: any) {
 		logger.error(`Erro ao buscar categorias: ${error.message}`);
